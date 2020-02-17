@@ -1,2 +1,3 @@
-# jmc-kafka-plugin
-JMC Plugin for kafka
+
+JMC Plugin for Kafka
+
