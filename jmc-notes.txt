@@ -1,0 +1,75 @@
+
+OPENJDK JMC
+
+----------------------------------------------------------------------------------------------------
+Install JDK and maven
+----------------------------------------------------------------------------------------------------
+
+# jmc build requires jdk 8.
+# build or the tests would fail with other versions of the jdk.
+
+$ sudo apt -y remove maven
+$ sudo apt -y remove openjdk-8-jdk openjdk-8-jre openjdk-8-jdk-headless openjdk-8-jre-headless
+$ sudo apt -y remove openjdk-11-jdk openjdk-11-jre openjdk-11-jdk-headless openjdk-11-jre-headless
+$ sudo apt -y autoremove
+
+$ sudo apt -y install openjdk-8-jdk openjdk-8-jre
+$ sudo apt -y install maven
+
+----------------------------------------------------------------------------------------------------
+Build jmc
+----------------------------------------------------------------------------------------------------
+
+Run jetty server
+----------------
+
+$ unset JAVA_HOME
+$ export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:.
+
+$ rm -rf /opt/jmc
+
+$ git clone https://github.com/openjdk/jmc.git /opt/jmc
+$ rm -rf /opt/jmc/.git*
+
+$ cd /opt/jmc/releng/third-party
+
+$ mvn p2:site
+$ mvn jetty:run
+
+Install and package jmc
+-----------------------
+
+$ unset JAVA_HOME
+$ export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:.
+
+$ cd /opt/jmc/core
+$ mvn clean install
+
+$ cd /opt/jmc
+$ mvn package
+$ mvn verify
+
+$ ln -s /opt/jmc/target/products/org.openjdk.jmc/linux/gtk/x86_64/jmc /opt/jmc/bin/jmc
+
+Install the latest jdk
+----------------------
+
+# openjdk jmc flight recorder requires higher jdk
+
+$ sudo apt -y remove openjdk-8-jdk openjdk-8-jre openjdk-8-jdk-headless openjdk-8-jre-headless
+$ sudo apt -y install openjdk-11-jdk openjdk-11-jre
+
+----------------------------------------------------------------------------------------------------
+References
+----------------------------------------------------------------------------------------------------
+
+https://docs.oracle.com/javase/8/docs/technotes/guides/
+https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/toc.html
+https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr002.html
+https://docs.oracle.com/javase/8/docs/technotes/guides/jvmti/index.html
+https://docs.oracle.com/javase/8/docs/technotes/tools/index.html
+
+https://github.com/openjdk/jmc
+
+----------------------------------------------------------------------------------------------------
+
